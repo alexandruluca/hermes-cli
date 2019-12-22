@@ -45,7 +45,7 @@ function validateManifest(manifest) {
 
 function getManifest(manifestLocation) {
 	manifestLocation = manifestLocation || process.cwd();
-	manifestLocation = path.join(manifestLocation, 'hermes-manifest.json');
+	manifestLocation = path.join(manifestLocation, 'hermes.json');
 
 	if(isMobileAppBuild) {
 		console.log('using default manifest for mobile apps');

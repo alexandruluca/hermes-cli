@@ -176,7 +176,7 @@ class DeployPipeline {
 
 			let includeAll = includePaths.length === 0;
 			includePaths.push('package.json');
-			includePaths.push('hermes-manifest.json');
+			includePaths.push('hermes.json');
 			includePaths.push('configuration/**');
 			includePaths.push('module.json');
 			includePaths.push('Module.js');
