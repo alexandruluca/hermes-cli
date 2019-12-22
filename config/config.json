@@ -1,0 +1,12 @@
+{
+	"package": {
+		"user": {
+			"username": "package",
+			"password": "ewfj0gre"
+		},
+		"host": {
+			"protocol": "http",
+			"hostname": "localhost:8090"
+		}
+	}
+}

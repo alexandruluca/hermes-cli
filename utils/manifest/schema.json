@@ -1,0 +1,60 @@
+{
+	"type": "object",
+	"properties": {
+		"packageLocation": {
+			"type": "string"
+		},
+		"bowerLocation": {
+			"type": "string"
+		},
+		"include": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"exclude": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"includeHiddenFilesAndFolders": {
+			"type": "boolean"
+		},
+		"test": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"strategy": {
+						"type": "string"
+					},
+					"dependencies": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"actions": {
+									"type": "array",
+									"items": {
+										"type": "string",
+										"enum": ["flush"]
+									}
+								}
+							}
+						}
+					}
+				},
+				"required": ["strategy"]
+			}
+		},
+		"deployAsAwsLambdaFunction": {
+			"type": "boolean"
+		}
+	},
+	"required": ["packageLocation", "include", "exclude", "includeHiddenFilesAndFolders"]
+}

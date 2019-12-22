@@ -1,0 +1,52 @@
+{
+    "properties": {
+        "package": {
+            "properties": {
+                "host": {
+                  "properties": {
+                    "protocol": {
+                        "type": "string"
+                    },
+                    "hostname": {
+                        "type": "string"
+                    },
+                    "port": {
+                        "type": "integer"
+                    }
+                  },
+                  "required": [
+                      "protocol",
+                      "hostname"
+                  ],
+                  "type": "object"
+                },
+                "debug": {
+                    "type": "boolean"
+                },
+                "user": {
+                    "properties": {
+                        "password": {
+                            "type": "string"
+                        },
+                        "username": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "username",
+                        "password"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "user"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "package"
+    ],
+    "type": "object"
+}

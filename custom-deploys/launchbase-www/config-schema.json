@@ -1,0 +1,14 @@
+{
+	"type": "object",
+	"properties": {
+		//config for e2e tests
+		"configPath": {
+			"type": "string"
+		},
+		//e2e tests reporting dir
+		"reportingDir": {
+			"type": "string"
+		}
+	},
+	"required": ["configPath", "reportingDir"]
+}

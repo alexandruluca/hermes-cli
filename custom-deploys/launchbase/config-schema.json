@@ -1,0 +1,54 @@
+{
+	"type": "object",
+	"properties": {
+		"pm2Home": {
+			"type": "string"
+		},
+		//launchbase config path
+		"configPath": {
+			"type": "string"
+		},
+		//reporting dir for unit tests
+		"serviceReportDir": {
+			"type": "string"
+		},
+		//reporting dir for integration tests
+		"integrationReportDir": {
+			"type": "string"
+		},
+		//config path for integration tests
+		"integrationTestConfigPath": {
+			"type": "string"
+		},
+		//launchbase mongo configuration
+		"mongo": {
+			"$ref": "#/definitions/MongoConnection"
+		},
+		"serviceJobs": {
+			"type": "object",
+			"properties": {
+				"mongo": {
+					"$ref": "#/definitions/MongoConnection"
+				}
+			}
+		}
+	},
+	"required": ["configPath", "serviceReportDir", "integrationReportDir", "integrationTestConfigPath", "pm2Home", "mongo", "serviceJobs"],
+	"definitions": {
+		"MongoConnection": {
+			"type": "object",
+			"properties": {
+				"username": {
+					"type": "string"
+				},
+				"password": {
+					"type": "string"
+				},
+				"database": {
+					"type": "string"
+				}
+			},
+			"required": ["username", "password", "database"]
+		}
+	}
+}

@@ -1,0 +1,11 @@
+{
+	"seleniumServerPort": 4444,
+	"desiredCapabilities": [
+		{
+			"browserName": "chrome",
+			"platforms": [
+				"linux"
+			]
+		}
+	]
+}

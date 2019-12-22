@@ -1,0 +1,82 @@
+Usage: hermes COMMAND [OPTIONS]
+
+
+hermes commandline utility
+
+  Version 0.4.0
+
+  Enables managing hermes related tasks from the commandline
+
+  The utility consists of several commands, for help type:
+
+  >hermes COMMAND OPTION -h
+
+  To print the version, type:
+
+  >hermes -v
+
+
+Available commands:
+
+config get
+  Usage: hermes config get <configuration property or path>
+
+  Prints the value of a config property. The specified property can be a
+  property or a dot-separated path
+
+  ###
+
+config list
+  Usage: hermes config list
+
+  Prints all available configuration properties
+
+  ###
+
+package add
+  Usage: hermes package add <path>
+
+  Where path is either an absolute path or a file in the current directory
+
+  The command uploads the file, which should an npm tarball, created with 'npm
+  pack', to the package server and can be installed with npm using the url
+  https://<username>:<password>@packages.hermes.com/api/package/<filename>
+
+  Where <filename> is the filename component of the <path>, for example
+  npmtest-1.0.0.tgz
+
+  ###
+
+  Examples
+
+  To add a package from the current working directory:
+
+  >cd ~/src/project
+  >hermes package add npmtest-1.0.0.tgz
+
+  To add a package from an absolute path:
+
+  >cd ~/
+  >hermes package add ~/src/project/npmtest-1.0.0.tgz
+
+  ###
+
+deploy create
+  Usage: hermes deploy create -v <semantic version>
+
+  The contents of the current folder, excluding git-related files and folders,
+  is compressed into and archive, the repository is tagged with the specified
+  version the archive is uploaded the the deployment bucket via the package
+  server.
+
+  The name of the deployment file will be the name of the current folder plus
+  the specified version, with the .zip file extension, for example project-dsm-
+  bid-integrator-web-1.0.6.zip.
+
+  Example
+
+  >cd ~/src/project-dsm-bid-integrator-web
+  >hermes deply create -v 1.0.6
+  Done uploading deployment project-dsm-bid-integrator-web-1.0.6.zip
+
+  ###

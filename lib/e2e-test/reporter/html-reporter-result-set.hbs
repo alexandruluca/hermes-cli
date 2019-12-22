@@ -1,0 +1,70 @@
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr class="overview">
+		<td colspan="3" title="{{browser}}"><strong>Browser:</strong> {{browser}}</td>
+	</tr>
+	<tr class="overview">
+		<td colspan="3"><strong>Timestamp:</strong> {{timestamp}}</td>
+	</tr>
+	<tr class="overview last">
+		<td colspan="3"><strong>Tests:</strong> {{results.tests}}<br></td>
+	</tr>
+	<tr>
+		<td class="pass"><strong>{{results.passed}}</strong> passed</td>
+		<td class="skip"><strong>{{results.errors}}</strong> errors</td>
+		<td class="fail"><strong>{{results.failed}}</strong> failures</td>
+	</tr>
+</table>
+
+{{#each results.modules}}
+	<h2>{{@key}}</h2>
+
+	{{#each this.completed}}
+		<h3>{{@key}}</h3>
+		<ul class="assertions">
+			{{#each this.assertions}}
+				<li>
+					{{#if failure}}
+						<span class="error">&#10006;</span>
+					{{else}}
+						<span class="success">&#10004;</span>
+					{{/if}}
+
+					{{this.message}}
+
+					{{#if this.failure}}
+						{{this.failure}}
+					{{/if}}
+
+					{{#if this.stacktrace}}
+						<div class="stacktrace">
+							<a href="#">view stacktrace</a>
+							<code><pre>{{this.stacktrace}}</pre></code>
+						</div>
+					{{/if}}
+				</li>
+			{{/each}}
+		</ul>
+
+		<p>
+			{{#if this.failed}}
+				<span class="error"><strong>FAILED:</strong></span>
+				<span class="error"><strong>{{this.failed}}</strong></span> assertions failed and
+				<span class="success"><strong>{{this.passed}}</span></strong> passed. ({{this.time}}s)
+			{{else}}
+				<span class="success"><strong>OK.</strong></span>
+				<span class="success"><strong>{{this.passed}}</strong></span> assertions passed. ({{this.time}}s)
+			{{/if}}
+		</p>
+	{{/each}}
+
+	{{#if this.skipped}}
+		<h4>skipped</h4>
+		<ul>
+			{{#each this.skipped}}
+				<li>{{this}}</li>
+			{{/each}}
+		</ul>
+	{{/if}}
+
+	<hr>
+{{/each}}

@@ -1,0 +1,78 @@
+{
+	"type": "object",
+	"properties": {
+		"baseUrl": {
+			"type": "string"
+		},
+		"username": {
+			"type": "string"
+		},
+		"password": {
+			"type": "string"
+		},
+		"userInteractionTimeout": {
+			"type": "number"
+		},
+		"selenium": {
+			"type": "object",
+			"properties": {
+				"properties": {
+					"host": {
+						"type": "string"
+					},
+					"port": {
+						"type": "number"
+					}
+				}
+			}
+		},
+		"desiredCapabilities": {
+			"type": "array",
+			"uniqueItems": true,
+			"items": {
+				"$ref": "#/definitions/Capability"
+			}
+		},
+		"browserStackUsername": {
+			"type": "string"
+		},
+		"browserStackKey": {
+			"type": "string"
+		}
+	},
+	"required": [
+		"baseUrl",
+		"username",
+		"password",
+		"desiredCapabilities"
+	],
+	"definitions": {
+		"Capability": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"browser": {
+					"type": "string",
+					"enum": ["Chrome", "IE", "Edge", "Firefox", "Safari", "Opera"]
+				},
+				"browser_version": {
+					"type": "string"
+				},
+				"os": {
+					"type": "string",
+					"enum": ["Windows", "OS X"]
+				},
+				"os_version": {
+					"type": "string"
+				},
+				"resolution": {
+					"type": "string"
+				},
+				"headless": {
+					"type": "boolean"
+				}
+			},
+			"required": ["browser"]
+		}
+	}
+}

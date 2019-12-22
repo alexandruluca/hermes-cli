@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"launchbase.systemsettings"},{"v":1,"unique":true,"key":{"key":1},"name":"key_1","ns":"launchbase.systemsettings","background":true},{"v":1,"unique":true,"key":{"id":1},"name":"id_1","ns":"launchbase.systemsettings","background":true}]}

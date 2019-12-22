@@ -1,0 +1,21 @@
+{
+	"launchbase": {
+		"pm2Home": "/home/ubuntu/.pm2",
+		"configPath": "/data/launchbase/config.json",
+		"serviceReportDir": "/app/hq/integration/reporting/launchbase/service",
+		"integrationReportDir": "/app/hq/integration/reporting/launchbase/integration",
+		"integrationTestConfigPath": "/app/hq/integration/integration-test-config.json",
+		"mongo": {
+			"username": "test",
+			"password": "test",
+			"database": "launchbase-test"
+		},
+		"serviceJobs": {
+			"mongo": {
+				"username": "launchbaseJobsDbUser",
+				"password": "tgT8tn99wa3b",
+				"database": "launchbaseJobs"
+			}
+		}
+	}
+}
