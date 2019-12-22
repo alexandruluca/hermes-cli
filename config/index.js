@@ -41,11 +41,13 @@ module.exports.readFile = readFile;
 module.exports.hermes_DIR = hermes_DIR;
 module.exports.DEPLOYMENT_LOCK_DIR = DEPLOYMENT_LOCK_DIR;
 module.exports.getForwardedServerUrl = getForwardedServerUrl;
+module.exports.isSetupComplete = isSetupComplete;
+module.exports.getConfigValue = getConfigValue;
 
 function setConfigValue(key, value) {
 	objectPath.set(globalConfig, key, value);
 
-	validateConfig(Object.assign(config, globalConfig));
+	validateConfig(deepExtend(config, globalConfig));
 
 	fs.writeFileSync(globalConfigPath, JSON.stringify(globalConfig));
 }
@@ -163,4 +165,15 @@ function readFile(fileName) {
 	} catch(err) {
 		return null;
 	}
+}
+
+function isSetupComplete() {
+	return  objectPath.get(config, 'package.user.username') &&
+	objectPath.get(config, 'package.user.password') &&
+	objectPath.get(config, 'package.host.protocol') &&
+	objectPath.get(config, 'package.host.host')
+}
+
+function getConfigValue(path) {
+	return objectPath.get(config, path);
 }
