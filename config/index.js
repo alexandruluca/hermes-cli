@@ -3,13 +3,13 @@
 */
 const path =  require('path');
 const configPath = path.join(__dirname, 'config.json');
-const config = require(configPath);
+let config = require(configPath);
 const deepExtend = require('deep-extend');
 const fs = require('fs');
 const objectPath = require('object-path');
 const homedir = require('os').homedir();
 const shell = require('shelljs');
-
+const _ = require('lodash')
 const hermes_DIR = path.join(homedir, '.hermes-cli');
 const DEPLOYMENT_LOCK_DIR = path.join(hermes_DIR, 'deployment-locks');
 const globalConfigPath = path.join(hermes_DIR, 'config.json');
@@ -24,8 +24,7 @@ try {
 }
 
 let globalConfig = require(globalConfigPath);
-deepExtend(config, globalConfig);
-
+config = _.defaultsDeep(globalConfig, config);
 validateConfig(config);
 
 config.package.url = createPackageServerUrl();
@@ -46,10 +45,12 @@ module.exports.getConfigValue = getConfigValue;
 
 function setConfigValue(key, value) {
 	objectPath.set(globalConfig, key, value);
-
-	validateConfig(deepExtend(config, globalConfig));
+	let _config = deepExtend(config, globalConfig);
+	validateConfig(_config);
 
 	fs.writeFileSync(globalConfigPath, JSON.stringify(globalConfig));
+
+	Object.assign(config, _config);
 }
 
 /**

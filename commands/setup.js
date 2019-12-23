@@ -7,6 +7,7 @@ const {setConfigValue, isSetupComplete, getConfigValue} = require('../config');
 const getUsage = require('command-line-usage')
 const inquirer = require('inquirer');
 const url = require('url');
+const packageApi = require('../lib/package-api');
 
 module.exports = Command.extend({
 	desc: 'Initial setup for hermes-cli',
@@ -54,10 +55,11 @@ function runSetup() {
 		message: `Hermes user name:`,
 		default: getConfigValue('package.user.username')
 	}, {
-		type: 'password',
+		type: 'input',
 		name: 'hermesUserPass',
-		message: `Hermes user password:`
-	}]).then(answers => {
+		message: `Hermes user password:`,
+		default: getConfigValue('package.user.password')
+	}]).then(async(answers) => {
 		if (!answers.apiUrl) {
 			return;
 		}
@@ -67,7 +69,21 @@ function runSetup() {
 
 		let urlParts = url.parse(answers.apiUrl);
 
-		setConfigValue('package.host.protocol', urlParts.protocol.startsWith('https') ? 'https' : 'http');
-		setConfigValue('package.host.host', urlParts.host)
+		setConfigValue('package.host.protocol', urlParts.protocol && urlParts.protocol.startsWith('https') ? 'https' : 'http');
+		setConfigValue('package.host.hostname', urlParts.host);
+
+		await packageApi.initialize();
+
+		const instance = await packageApi.getInstance();
+
+		try {
+			let ping = await instance.ping.getPing();
+			if(ping === 'pong') {
+				console.log('Authentication was successfull.');
+			}
+		} catch(err) {
+			console.log('Authentication failed.');
+			return runSetup();
+		}
 	});
 }
