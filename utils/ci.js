@@ -6,7 +6,7 @@ exports.isPullRequest = isPullRequest;
 exports.getPullRequestMeta = getPullRequestMeta;
 
 function getPullRequestMeta() {
-	return {
+/* 	return {
 		actualCommit: '27deac367550108f21f7f5abf66ce10512ad0950',
 		actualCommitAuthor: 'luca.p.alexandru@gmail.com',
 		actualCommitAuthorEmail: 'luca.p.alexandru@gmail.com',
@@ -18,7 +18,7 @@ function getPullRequestMeta() {
 		issueNumber: '1',
 		targetBranch: 'develop',
 		sha1: 'sha1'
-	}
+	} */
 
 	let prInformation = {
 		actualCommit: process.env.ghprbActualCommit,
