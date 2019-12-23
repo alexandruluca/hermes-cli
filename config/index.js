@@ -27,6 +27,10 @@ let globalConfig = require(globalConfigPath);
 config = _.defaultsDeep(globalConfig, config);
 validateConfig(config);
 
+if ([0, 1].includes(config.NODE_TLS_REJECT_UNAUTHORIZED)) {
+	process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = config.NODE_TLS_REJECT_UNAUTHORIZED
+}
+
 config.package.url = createPackageServerUrl();
 config.package.apiUrl = getApiUrl(config.package.host);
 config.package.npmpackagebaseurl = createPackageServerUrl(true);
