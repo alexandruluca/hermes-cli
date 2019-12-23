@@ -47,6 +47,9 @@
 		"NODE_TLS_REJECT_UNAUTHORIZED": {
 			"type": "number",
 			"enum": [0, 1]
+		},
+		"DEBUG": {
+			"type": "string"
 		}
     },
     "required": [

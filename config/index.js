@@ -31,6 +31,10 @@ if ([0, 1].includes(config.NODE_TLS_REJECT_UNAUTHORIZED)) {
 	process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = config.NODE_TLS_REJECT_UNAUTHORIZED
 }
 
+if (config.DEBUG) {
+	process.env.DEBUG = config.DEBUG;
+}
+
 config.package.url = createPackageServerUrl();
 config.package.apiUrl = getApiUrl(config.package.host);
 config.package.npmpackagebaseurl = createPackageServerUrl(true);
