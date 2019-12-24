@@ -1,5 +1,5 @@
 const isCI = require('is-ci');
-const isPullRequest = true; //isCI && !!(process.env.ghprbPullId && process.env.ghprbTargetBranch);
+const isPullRequest = isCI && !!(process.env.ghprbPullId && process.env.ghprbTargetBranch);
 
 exports.isPullRequest = isPullRequest;
 
