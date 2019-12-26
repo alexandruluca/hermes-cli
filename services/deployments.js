@@ -23,6 +23,9 @@ async function getDeploymentUploadUrl(deploymentMeta) {
  * @param {Object} deploymentMeta
  * @param {String} deploymentMeta.deploymentName
  * @param {String} deploymentMeta.band
+ * @param {String} deploymentMeta.iosCfBundleId
+ * @param {String} deploymentMeta.androidVersionCode
+ * @param {Object=} deploymentMeta.pullRequestMeta
  * @param {String} deploymentMeta.version
  * @param {String[]} deploymentMeta.changelog
  * @param {Boolean} deploymentMeta.isHotfix
@@ -33,13 +36,9 @@ async function getDeploymentUploadUrl(deploymentMeta) {
  * @param {Boolean} options.overrideExistingDeployment
  */
 async function createDeployment(deploymentMeta, {sourcePath, overrideExistingDeployment}) {
-	let createdDeploymentMeta = await _createDeployment(deploymentMeta, overrideExistingDeployment);
+	let createDeploymentPayload = payloadFactory.getCreateDeploymentPayload(deploymentMeta);
 
-	if (sourcePath === null) {
-		return createdDeploymentMeta;
-	}
-
-	let {gitTag, projectName} = createdDeploymentMeta;
+	let gitTag = await api.deployments.getDeploymentTagName({deployment: createDeploymentPayload});
 
 	try {
 		try {
@@ -52,40 +51,26 @@ async function createDeployment(deploymentMeta, {sourcePath, overrideExistingDep
 		throw new Error(`git tag and push failed for tag='${gitTag}'`);
 	}
 
-	return api.deployments.uploadDeploymentFile({
-		projectName,
-		gitTag,
-		deployment: fs.createReadStream(sourcePath)
-	});
+	// we send it as form-data
+	let a = {
+		name: deploymentMeta.deploymentName,
+		deploymentFile: fs.createReadStream(sourcePath),
+		band: deploymentMeta.band,
+		version: deploymentMeta.version,
+		serverTag: deploymentMeta.serverTag,
+		pullRequestMeta: deploymentMeta.pullRequestMeta ? JSON.stringify(deploymentMeta.pullRequestMeta) : undefined,
+		isHotfix: deploymentMeta.isHotfix ? 'true' : 'false',
+		iosCfBundleId: deploymentMeta.iosCfBundleId,
+		androidVersionCode: deploymentMeta.androidVersionCode,
+		deployAsAwsLambdaFunction: deploymentMeta.deployAsAwsLambdaFunction ? 'true' : 'false',
+		overrideExistingDeployment: overrideExistingDeployment
+	};
 
-	//return uploadDeployment(gitTag, sourcePath);
+	for (let prop in a) {
+		if (a[prop] === undefined) {
+			delete a[prop];
+		}
+	}
 
-	return getDeploymentUploadUrl(deploymentMeta).then(({uploadUrl}) => {
-		return s3Upload.upload(sourcePath, uploadUrl).then(() => {
-			logger.debug(`used upload url: ${uploadUrl}`);
-			logger.info(`done upload for "${deploymentMeta.deploymentName}"`);
-			return _createDeployment(deploymentMeta, overrideExistingDeployment);
-		});
-	});
-}
-
-/**
- * @param {Object} deployment
- * @param {String} deployment.deploymentName
- * @param {String} deployment.band
- * @param {String} deployment.version
- * @param {String[]} deployment.changelog
- * @param {Boolean} deployment.isHotfix
- * @param {String} deployment.serverTag
- * @param {Boolean=} deployment.deployAsAwsLambdaFunction
- * @param {Boolean=} overrideExistingDeployment
- *
- * @param {*} deployment
- */
-function _createDeployment(deployment, overrideExistingDeployment ) {
-	deployment = payloadFactory.getCreateDeploymentPayload(deployment);
-
-	return api.deployments.createDeployment({deployment, overrideExistingDeployment}).catch(err => {
-		throw err;
-	})
+	return api.deployments.createDeployment(a);
 }
