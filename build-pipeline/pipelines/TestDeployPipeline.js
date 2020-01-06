@@ -179,7 +179,7 @@ class TestDeployPipeline {
 				packageJSON.pullRequestMeta = prMeta;
 				packageJSON.pullRequestMeta.issueLink = projectIssue.link;
 
-				fs.writeFileSync(rootPackageLocation, JSON.stringify(packageJSON, null, 4));
+				fs.writeFileSync(rootPackageLocation, JSON.stringify(packageJSON, null, '\t'));
 			}
 
 			return;
