@@ -73,7 +73,7 @@ class TestDeployPipeline {
 
 	async run() {
 		if (isPullRequest) {
-			let {sourceBranch} = this.pullRequestMeta;
+			let {sourceBranch} = getPullRequestMeta();
 
 			if (sourceBranch.startsWith('dependabot/')) {
 				this.isDryRun = true;
