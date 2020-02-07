@@ -72,6 +72,14 @@ class TestDeployPipeline {
 	}
 
 	async run() {
+		if (isPullRequest) {
+			let {sourceBranch} = this.pullRequestMeta;
+
+			if (sourceBranch.startsWith('dependabot/')) {
+				this.isDryRun = true;
+			}
+		}
+
 		try {
 			let projectDir = process.cwd();
 			let packageJSON = require(path.join(projectDir, 'package.json'));
