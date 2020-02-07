@@ -153,6 +153,10 @@ class TestDeployPipeline {
 	}
 
 	async finalize() {
+		if (this.isDryRun) {
+			return;
+		}
+
 		if (isPullRequest) {
 			let pullRequestStatus = this.buildError ? PullRequestStatus.FAILING_BUILD : PullRequestStatus.BUILD_COMPLETE;
 			logger.info(`setting pull-request status to '${pullRequestStatus}'`);
