@@ -42,19 +42,62 @@
 									"type": "array",
 									"items": {
 										"type": "string",
-										"enum": ["flush"]
+										"enum": [
+											"flush"
+										]
 									}
 								}
 							}
 						}
 					}
 				},
-				"required": ["strategy"]
+				"required": [
+					"strategy"
+				]
 			}
 		},
 		"deployAsAwsLambdaFunction": {
 			"type": "boolean"
+		},
+		"runtimeOptions": {
+			"type": "object",
+			"required": [
+				"script", "configurable"
+			],
+			"properties": {
+				"script": {
+					"type": "string"
+				},
+				"configurable": {
+					"type": "boolean"
+				},
+				"execMode": {
+					"type": "string",
+					"enum": [
+						"cluster",
+						"fork"
+					]
+				},
+				"instances": {
+					"oneOf": [
+						{
+							"type": "string",
+							"enum": [
+								"max"
+							]
+						},
+						{
+							"type": "number"
+						}
+					]
+				}
+			}
 		}
 	},
-	"required": ["packageLocation", "include", "exclude", "includeHiddenFilesAndFolders"]
+	"required": [
+		"packageLocation",
+		"include",
+		"exclude",
+		"includeHiddenFilesAndFolders"
+	]
 }
