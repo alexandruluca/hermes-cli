@@ -13,7 +13,7 @@
 		"defaults-deep": "^0.2.4",
 		"err-code": "1.1.2",
 		"globby": "8.0.1",
-		"handlebars": "4.0.11",
+		"handlebars": "4.7.6",
 		"inquirer": "5.2.0",
 		"is-ci": "2.0.0",
 		"lockfile": "1.0.4",
