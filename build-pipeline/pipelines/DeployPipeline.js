@@ -1,4 +1,4 @@
-const {getPackageJSON, getManifest} = require('../../utils/manifest');
+const {getPackageJSON, getManifest, getPackageJSONLocation} = require('../../utils/manifest');
 const {normalizeVersion, saveCIChangelogInfo, getDeploymentMeta} = require('../../utils/deployment');
 const {isPullRequest, getPullRequestMeta} = require('../../utils/ci');
 const packageServer = require('../../lib/deploy');
@@ -16,6 +16,7 @@ const BUMP_SEQUENCES = [
 ];
 
 const path = require('path');
+const {ZipService} = require('../services/ZipService');
 
 class DeployPipeline {
 	/**
@@ -155,9 +156,9 @@ class DeployPipeline {
 		let tempZipPath = tempfile('.zip');
 
 		let includePaths = manifest.include;
-		let excludePaths = manifest.exclude;
+		let manifestExcludePaths = manifest.exclude;
 
-		const createArchive = new Promise((resolve, reject) => {
+		const createArchive = new Promise(async (resolve, reject) => {
 			let outputStream = fs.createWriteStream(tempZipPath);
 			let archive = archiver('zip', {
 				zlib: {level: 9} // Sets the compression level.
@@ -182,6 +183,12 @@ class DeployPipeline {
 			includePaths.push('Module.js');
 
 			let inclusionGlob = includeAll ? '**' : `{${includePaths.join(',')}}`;
+
+			let excludePaths = await new ZipService({
+				exclude: manifestExcludePaths,
+				logger,
+				servicePath: getPackageJSONLocation()
+			}).getExclusionGlob();
 
 			logger.info(`inclusion pattern used: ${inclusionGlob}`);
 			logger.info(`exclusion pattern used: ${excludePaths.join(',')}`);
