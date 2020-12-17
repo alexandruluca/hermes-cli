@@ -142,7 +142,7 @@ class TestDeployPipeline {
 			return;
 		}
 
-		await this.productionNpmInstall();
+		// await this.productionNpmInstall();
 
 		await this.deployPipeline.run();
 		await this.getAndSetPullRequestDeployment();

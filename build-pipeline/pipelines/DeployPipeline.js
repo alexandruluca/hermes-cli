@@ -187,7 +187,7 @@ class DeployPipeline {
 			let excludePaths = await new ZipService({
 				exclude: manifestExcludePaths,
 				logger,
-				servicePath: getPackageJSONLocation()
+				servicePath: path.dirname(getPackageJSONLocation())
 			}).getExclusionGlob();
 
 			logger.info(`inclusion pattern used: ${inclusionGlob}`);
