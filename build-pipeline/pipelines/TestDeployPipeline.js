@@ -312,6 +312,7 @@ class TestDeployPipeline {
 
 	npmInstall() {
 		let packageJSONFolder = path.dirname(this.packageJsonLocation);
+		logger.info(`npm install --no-save`);
 		execScript('npm install --no-save', {silent: true, cwd: packageJSONFolder, message: 'npm install'});
 	}
 

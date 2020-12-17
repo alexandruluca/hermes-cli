@@ -29,11 +29,11 @@ class DeployPipeline {
 		this.isHotfix = process.argv.indexOf('--hotfix') > -1;
 		this.overrideExistingDeployment = options.overrideExistingDeployment
 
-		if(this.band === DeploymentBand.QA && !isPullRequest) {
+		if (this.band === DeploymentBand.QA && !isPullRequest) {
 			throw new Error(`qa band deployments can only be created with pull requests`);
 		}
 
-		if(isPullRequest && this.band !== DeploymentBand.QA) {
+		if (isPullRequest && this.band !== DeploymentBand.QA) {
 			throw new Error(`pull requests can only be created with QA band`);
 		}
 	}

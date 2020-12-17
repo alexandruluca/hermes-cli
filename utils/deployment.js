@@ -13,7 +13,7 @@ const {isPullRequest, getPullRequestMeta} = require('../utils/ci');
 let acquiredLocks = {};
 
 exports.normalizeVersion = normalizeVersion;
-exports.denormalizeVersion =  denormalizeVersion;
+exports.denormalizeVersion = denormalizeVersion;
 exports.doVersionBump = doVersionBump;
 exports.pushChanges = pushChanges;
 exports.acquireLock = acquireLock;
@@ -24,10 +24,10 @@ exports.getCIChangeLogInfo = getCIChangeLogInfo;
 exports.getDeploymentMeta = getDeploymentMeta;
 
 function normalizeVersion(version, band) {
-	if(!version) {
+	if (!version) {
 		throw new Error('missing version param');
 	}
-	if(!band) {
+	if (!band) {
 		throw new Error('missing band param');
 	}
 
@@ -47,7 +47,7 @@ async function doVersionBump(band = paramRequired('band'), gitCommit = true) {
 	let packageLocation = getPackageJSONLocation();
 	let versionSeed = normalizeVersion(packageJSON.version, band);
 
-	if(!versionSeed) {
+	if (!versionSeed) {
 		throw new Error('package.json does not contain a version');
 	}
 
@@ -78,7 +78,7 @@ async function doVersionBump(band = paramRequired('band'), gitCommit = true) {
 
 	version = normalizeVersion(version, band);
 
-	if(!gitCommit) {
+	if (!gitCommit) {
 		return {
 			version
 		};
@@ -87,10 +87,7 @@ async function doVersionBump(band = paramRequired('band'), gitCommit = true) {
 	let denormalizedVersion = denormalizeVersion(version);
 	let commitNeeded = false;
 
-	console.log('versionSeed', versionSeed);
-	console.log('version', version);
-
-	if(versionSeed !== version) {
+	if (versionSeed !== version) {
 		shell.pushd(path.dirname(packageLocation));
 
 		execScript(`npm version ${denormalizedVersion} --no-git-tag-version --allow-same-version && git add package.json`);
@@ -99,7 +96,7 @@ async function doVersionBump(band = paramRequired('band'), gitCommit = true) {
 		shell.popd();
 	}
 
-	if(isMobileAppBuild && versionSeed !== version || iosCfBundleId !== iosCfBundleIdSeed || androidVersionCode !== androidVersionCodeSeed) {
+	if (isMobileAppBuild && versionSeed !== version || iosCfBundleId !== iosCfBundleIdSeed || androidVersionCode !== androidVersionCodeSeed) {
 		appBuildUtils.writeConfigXml({
 			version: denormalizedVersion,
 			'ios-CFBundleVersion': iosCfBundleId,
@@ -114,12 +111,6 @@ async function doVersionBump(band = paramRequired('band'), gitCommit = true) {
 	if (commitNeeded) {
 		execScript(`git commit -m "[ci skip] - automatic version bump" --no-verify`);
 	}
-
-	console.log('increments')
-	console.log(version,
-		iosCfBundleIdSeed,
-		androidVersionCode)
-
 
 	return {
 		version,
@@ -137,7 +128,7 @@ async function getDeploymentMeta() {
 		...appVersionNumbers
 	};
 
-	if(isPullRequest) {
+	if (isPullRequest) {
 		meta.pullRequestMeta = getPullRequestMeta();
 	}
 
@@ -155,7 +146,7 @@ function getBranchName() {
 function checkDetachedHead() {
 	let branchName = getBranchName();
 
-	if(branchName === 'HEAD') {
+	if (branchName === 'HEAD') {
 		throw new Error('branch is in a detached head, create a local branch to match your remote');
 	}
 }
@@ -165,17 +156,17 @@ async function acquireLock() {
 
 	try {
 		isPackage = !!require(path.join(process.cwd(), 'package.json'));
-	} catch(err) {
+	} catch (err) {
 	}
 
-	if(!isPackage) {
+	if (!isPackage) {
 		return;
 	}
 
 	const manifestTests = getManifest().test || [];
 	const deploymentName = getDeploymentName();
 	const dependencies = manifestTests.reduce((dependencies, test) => {
-		if(test.dependencies && test.dependencies.length) {
+		if (test.dependencies && test.dependencies.length) {
 			dependencies = dependencies.concat(test.dependencies.map(d => d.name));
 		}
 		return dependencies;
@@ -191,7 +182,7 @@ async function acquireLock() {
 			lockError = err;
 		});
 	})).then(() => {
-		if(lockError) {
+		if (lockError) {
 			throw lockError;//gives us the chance that all promises settle before throwing an error
 		}
 		logger.info(`global lock was aquired`.green);
@@ -203,7 +194,7 @@ async function _acquireLock(lockName) {
 
 	return new Promise((resolve, reject) => {
 		lockFile.lock(lockPath, (err) => {
-			if(err) {
+			if (err) {
 				return setTimeout(() => {
 					_acquireLock(lockName).then(resolve);
 				}, 100);
@@ -217,7 +208,7 @@ async function _acquireLock(lockName) {
 }
 
 function cleanupAcquiredLocks() {
-	for(let prop in acquiredLocks) {
+	for (let prop in acquiredLocks) {
 		lockFile.unlockSync(prop);
 		logger.info(`lock on "${prop}" was removed`);
 	}
