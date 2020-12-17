@@ -190,8 +190,8 @@ class DeployPipeline {
 				servicePath: path.dirname(getPackageJSONLocation())
 			}).getExclusionGlob();
 
-			logger.info(`inclusion pattern used: ${inclusionGlob}`);
-			logger.info(`exclusion pattern used: ${excludePaths.join(',')}`);
+			// logger.info(`inclusion pattern used: ${inclusionGlob}`);
+			// logger.info(`exclusion pattern used: ${excludePaths.join(',')}`);
 
 			archive.glob(inclusionGlob, {
 				ignore: excludePaths
