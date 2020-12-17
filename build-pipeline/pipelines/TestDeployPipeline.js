@@ -142,8 +142,6 @@ class TestDeployPipeline {
 			return;
 		}
 
-		await this.productionNpmInstall();
-
 		await this.deployPipeline.run();
 		await this.getAndSetPullRequestDeployment();
 
@@ -315,14 +313,8 @@ class TestDeployPipeline {
 	npmInstall() {
 		let packageJSONFolder = path.dirname(this.packageJsonLocation);
 		logger.info(`npm install --no-save`);
-		execScript('npm install --no-save', {silent: true, cwd: packageJSONFolder, message: 'npm install'});
-	}
-
-	productionNpmInstall() {
-		let packageJSONFolder = path.dirname(this.packageJsonLocation);
-		logger.info(`npm install --only=prod`);
 		execScript('rm -rf node_modules');
-		execScript('npm install --only=prod', {silent: true, cwd: packageJSONFolder, message: 'npm install --only=prod'});
+		execScript('npm install --no-save', {silent: true, cwd: packageJSONFolder, message: 'npm install'});
 	}
 
 	/**
