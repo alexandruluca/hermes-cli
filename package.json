@@ -1,6 +1,6 @@
 {
 	"name": "hermes-cli",
-	"version": "3.0.10",
+	"version": "3.0.11",
 	"description": "Enables managing hermes related tasks from the commandline. Should be installed globally.",
 	"dependencies": {
 		"ajv": "6.5.0",
