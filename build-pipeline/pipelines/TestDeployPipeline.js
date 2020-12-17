@@ -23,7 +23,7 @@ class TestDeployPipeline {
 	 * @param {DeployPipeline} deployPipeline
 	 */
 	constructor({band = rp('band'), deployPipeline = rp('deployPipeline'),
-				 dryRun = false, skipDeployOnPullRequest = false, skipTest = false}) {
+		dryRun = false, skipDeployOnPullRequest = false, skipTest = false}) {
 		if (band === DeploymentBand.QA && !isPullRequest) {
 			throw new Error(`'qa' band only accepts pull requests`);
 		}
@@ -141,6 +141,8 @@ class TestDeployPipeline {
 		if (this.isDryRun) {
 			return;
 		}
+
+		await this.productionNpmInstall();
 
 		await this.deployPipeline.run();
 		await this.getAndSetPullRequestDeployment();
@@ -297,11 +299,11 @@ class TestDeployPipeline {
 
 		let buildScriptName = this.band === DeploymentBand.QA ? `ci-build-develop` : `ci-build-${this.band}`;
 		let runnableScript;
-		if(scripts[buildScriptName]) {
+		if (scripts[buildScriptName]) {
 			runnableScript = buildScriptName;
-		} else if(scripts['ci-build']) {
+		} else if (scripts['ci-build']) {
 			runnableScript = 'ci-build';
-		} else if(scripts.build) {
+		} else if (scripts.build) {
 			runnableScript = 'build';
 		}
 
@@ -314,6 +316,13 @@ class TestDeployPipeline {
 		let packageJSONFolder = path.dirname(this.packageJsonLocation);
 		logger.info(`npm install --no-save`);
 		execScript('npm install --no-save', {silent: true, cwd: packageJSONFolder, message: 'npm install'});
+	}
+
+	productionNpmInstall() {
+		let packageJSONFolder = path.dirname(this.packageJsonLocation);
+		logger.info(`npm install --production`);
+		execScript('rm -rf node_modules');
+		execScript('npm install --production', {silent: true, cwd: packageJSONFolder, message: 'npm install --production'});
 	}
 
 	/**
