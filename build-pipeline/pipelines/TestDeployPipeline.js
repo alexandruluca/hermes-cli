@@ -320,9 +320,9 @@ class TestDeployPipeline {
 
 	productionNpmInstall() {
 		let packageJSONFolder = path.dirname(this.packageJsonLocation);
-		logger.info(`npm install --production`);
+		logger.info(`npm install --only=prod`);
 		execScript('rm -rf node_modules');
-		execScript('npm install --production', {silent: true, cwd: packageJSONFolder, message: 'npm install --production'});
+		execScript('npm install --only=prod', {silent: true, cwd: packageJSONFolder, message: 'npm install --only=prod'});
 	}
 
 	/**
