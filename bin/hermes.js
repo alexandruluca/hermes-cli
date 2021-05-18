@@ -12,7 +12,7 @@ global.isSetupCommand = isSetupCommand;
 		}
 		require('./index.js');
 	} catch (err) {
-		if (err.message.indexOf('Can\'t read from server.') > -1) {
+		if ((err.message || err).indexOf('Can\'t read from server.') > -1) {
 			logger.error(`lb-packages initialization failed: ${err}`);
 		}
 		console.log(err);
