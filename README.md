@@ -5,7 +5,7 @@ Enables performing hermes related tasks from the commandline.
 ## Installation
 The hermes-cli is hosted on the hermes package server and shall be installed with npm globally:
 ```
-sudo npm install -g git+ssh://git@github.com:hermesMobile/hermes-cli.git#3.0.11 --unsafe-perm
+sudo npm install -g git+ssh://git@github.com:hermesMobile/hermes-cli.git#3.0.12 --unsafe-perm
 ```
 
 ## Usage
